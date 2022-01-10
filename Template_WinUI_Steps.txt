@@ -1,0 +1,8 @@
+1. Nugget MS Dependency Injection
+2. Create Views/Page
+3. DependencyContainer
+4. Compile
+5. Delete default MainWindow
+6. Edit App.xaml/cs
+7. Compile
+8. Edit Shell

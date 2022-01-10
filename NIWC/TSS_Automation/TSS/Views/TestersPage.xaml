@@ -1,0 +1,248 @@
+﻿<Page
+    x:Class="TSS.Views.TestersPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:TSS.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="using:TSS.Lib.ViewModels"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="MinWidth" Value="100" />
+        </Style>
+    </Page.Resources>
+
+    <!--#region NameOfRegion-->
+    <!--#endregion-->
+
+    <Grid Margin="6,0,6,6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--#region List-->
+
+        <Grid
+            Grid.Column="0"
+            Padding="12"
+            BorderBrush="LightGray"
+            BorderThickness="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <TextBlock
+                    FontSize="24"
+                    HorizontalTextAlignment="Center"
+                    Text="{x:Bind ViewModel.TesterCountStr, Mode=OneWay}" />
+
+                <Button
+                    x:Name="btnAdd"
+                    Margin="0,6,0,6"
+                    HorizontalAlignment="Center"
+                    Background="Transparent"
+                    Click="{x:Bind ViewModel.GoToAddNewTesterPage}">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Margin="0,0,6,0" Symbol="Add" />
+                        <TextBlock Text="New Tester" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    MinWidth="{Binding ElementName=btnAdd, Path=ActualWidth}"
+                    Margin="0,6,0,6"
+                    HorizontalAlignment="Center"
+                    Background="Transparent"
+                    Click="{x:Bind ViewModel.LoadTestersAsync}">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Margin="0,0,6,0" Symbol="Refresh" />
+                        <TextBlock Text="Reload" />
+                    </StackPanel>
+                </Button>
+
+                <Rectangle Height="1" />
+            </StackPanel>
+
+            <ListView
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                ItemsSource="{x:Bind ViewModel.TesterWrappers, Mode=OneWay}"
+                Loaded="{x:Bind ViewModel.LoadTestersAsync}"
+                SelectedItem="{x:Bind ViewModel.SelectedTesterWrapper, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodels:TesterWrapper">
+                        <PersonPicture Margin="0,6,0,6" DisplayName="{x:Bind ItShelf.Name, Mode=OneTime}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <!--#endregion-->
+
+        <!--#region Details-->
+
+        <Grid
+            Grid.Column="1"
+            Margin="12,0,0,0"
+            Padding="12"
+            BorderBrush="LightGray"
+            BorderThickness="3"
+            Visibility="{x:Bind ViewModel.SelectedTesterWrapper, Mode=OneWay, Converter={StaticResource nullToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="50" />
+                <RowDefinition Height="Auto" MinHeight="50" />
+                <RowDefinition Height="Auto" MinHeight="50" />
+                <RowDefinition Height="Auto" MinHeight="50" />
+                <RowDefinition Height="Auto" MinHeight="50" />
+                <RowDefinition Height="Auto" MinHeight="50" />
+                <RowDefinition Height="*" MinHeight="50" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--#region Row 0: Edit/Delete/Save/Cancel-->
+            <StackPanel Grid.Row="0" Grid.ColumnSpan="2">
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Margin="0,0,24,0"
+                        Background="Transparent"
+                        Click="{x:Bind ViewModel.SwitchEditMode}"
+                        Visibility="{x:Bind ViewModel.IsEditMode, Mode=TwoWay, Converter={StaticResource boolToVisibilityReverseAndBackConverter}}">
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Margin="0,0,6,0" Symbol="Edit" />
+                            <TextBlock Text="Edit" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Margin="0,0,24,0"
+                        Background="Transparent"
+                        Click="{x:Bind ViewModel.SaveAsync}"
+                        IsEnabled="{x:Bind ViewModel.SelectedTesterWrapper.CanSave, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.IsEditMode, Mode=TwoWay, Converter={StaticResource boolToVisibilityAndBackConverter}}">
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Margin="0,0,6,0" Symbol="Save" />
+                            <TextBlock Text="Save" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Margin="0,0,24,0"
+                        Background="Transparent"
+                        Click="{x:Bind ViewModel.DeleteAsync}"
+                        Visibility="{x:Bind ViewModel.IsEditMode, Mode=TwoWay, Converter={StaticResource boolToVisibilityReverseAndBackConverter}}">
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Margin="0,0,6,0" Symbol="Delete" />
+                            <TextBlock Text="Delete" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Margin="0,0,24,0"
+                        Background="Transparent"
+                        Click="{x:Bind ViewModel.CancelAsync}"
+                        Visibility="{x:Bind ViewModel.IsEditMode, Mode=TwoWay, Converter={StaticResource boolToVisibilityAndBackConverter}}">
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Margin="0,0,6,0" Symbol="Cancel" />
+                            <TextBlock Text="Cancel" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+            <!--#endregion-->
+
+            <!--#region Row 1: ID-->
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                FontSize="18"
+                Text="ID" />
+
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="1"
+                FontSize="18"
+                Text="{x:Bind ViewModel.SelectedTesterWrapper.Id, Mode=OneWay}" />
+            <!--#endregion-->
+
+            <!--#region Row 2: Name-->
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                FontSize="18"
+                Text="Name" />
+
+            <TextBox
+                Grid.Row="2"
+                Grid.Column="1"
+                MinWidth="200"
+                VerticalAlignment="Center"
+                FontSize="18"
+                IsEnabled="{x:Bind ViewModel.IsEditMode, Mode=OneWay}"
+                Text="{x:Bind ViewModel.SelectedTesterWrapper.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <!--#endregion-->
+
+            <!--#region Row 3: Is Primary-->
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="0"
+                FontSize="18"
+                Text="Is Primary Tester?" />
+
+            <CheckBox
+                Grid.Row="3"
+                Grid.Column="1"
+                IsChecked="{x:Bind ViewModel.SelectedTesterWrapper.IsPrimary, Mode=TwoWay}"
+                IsEnabled="{x:Bind ViewModel.IsEditMode, Mode=OneWay}"
+                ToolTipService.ToolTip="Otherwise: if unchecked, is a secondary tester" />
+            <!--#endregion-->
+
+            <!--#region Row 4: Is Test-Team-->
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                Margin="0,0,12,0"
+                FontSize="18"
+                Text="Is Test-Team member?" />
+
+            <CheckBox
+                Grid.Row="4"
+                Grid.Column="1"
+                IsChecked="{x:Bind ViewModel.SelectedTesterWrapper.IsTestTeam, Mode=TwoWay}"
+                IsEnabled="{x:Bind ViewModel.IsEditMode, Mode=OneWay}"
+                ToolTipService.ToolTip="Otherwise: if unchecked, can be long to other teams, like Software, Analysis, Admin, Cyber, etc." />
+            <!--#endregion-->
+
+            <!--#region Row 5: Is Govee-->
+            <TextBlock
+                Grid.Row="5"
+                Grid.Column="0"
+                FontSize="18"
+                Text="Is a Govee?" />
+
+            <CheckBox
+                Grid.Row="5"
+                Grid.Column="1"
+                IsChecked="{x:Bind ViewModel.SelectedTesterWrapper.IsGovee, Mode=TwoWay}"
+                IsEnabled="{x:Bind ViewModel.IsEditMode, Mode=OneWay}"
+                ToolTipService.ToolTip="Otherwise: if unchecked, is a contractor" />
+            <!--#endregion-->
+        </Grid>
+
+        <!--#endregion-->
+    </Grid>
+</Page>

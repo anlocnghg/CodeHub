@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TSS (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "TSS (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

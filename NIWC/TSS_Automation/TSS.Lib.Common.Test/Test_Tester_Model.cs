@@ -1,6 +1,4 @@
-﻿using System;
-
-using TSS.Lib.Common.Models;
+﻿using TSS.Lib.Common.Models;
 
 using Xunit;
 

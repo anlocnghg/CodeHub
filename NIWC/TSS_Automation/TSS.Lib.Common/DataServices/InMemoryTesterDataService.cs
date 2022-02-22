@@ -1,5 +1,4 @@
-﻿
-using LocLib.IData;
+﻿using LocLib.IData;
 
 using TSS.Lib.Common.Models;
 
@@ -46,6 +45,7 @@ namespace TSS.Lib.Common.DataServices
             return await Task.Run(() =>
             {
                 Tester tester = _testers.Single(t => t.Id == updatedTester.Id);
+
                 {
                     tester.Name = updatedTester.Name;
                     tester.IsPrimary = updatedTester.IsPrimary;

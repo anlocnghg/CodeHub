@@ -1,35 +1,295 @@
 ﻿<Page
     x:Class="TSS.Views.PreferencePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:TSS.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="using:System"
+    xmlns:app="using:TSS"
+    xmlns:models="using:TSS.Lib.Common.Models"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
+
+    <Page.Resources>
+
+        <Style x:Key="gridOfTabViewItem" TargetType="Grid">
+            <Setter Property="Margin" Value="0,24,0,0" />
+        </Style>
+
+        <Style x:Key="myGridViewItemStyle" TargetType="GridView">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="Margin" Value="0,6,6,0" />
+                        <Setter Property="Padding" Value="6" />
+
+                        <Setter Property="Background" Value="{StaticResource myBackgroundColor1}" />
+                        <Setter Property="Foreground" Value="{StaticResource myForegroundColor1}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="myListViewItemStyle" TargetType="ListView">
+
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Margin" Value="0" />
+
+                        <Setter Property="Background" Value="{StaticResource myBackgroundColor3}" />
+                        <Setter Property="Foreground" Value="{StaticResource myForegroundColor1}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Margin" Value="0" />
+
+            <Setter Property="MinHeight" Value="50" />
+            <!--<Setter Property="MaxHeight" Value="150" />-->
+            <!--<Setter Property="MinWidth" Value="300" />
+            <Setter Property="MaxWidth" Value="450" />-->
+            <Setter Property="Width" Value="400" />
+
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Visible" />
+            <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Enabled" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
+            <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+
+            <Setter Property="SelectionMode" Value="None" />
+        </Style>
+
+        <Style x:Key="myRectangleHorizontalLineStyle" TargetType="Rectangle">
+            <Setter Property="Fill" Value="{StaticResource myForegroundColor3}" />
+            <Setter Property="Height" Value="1" />
+        </Style>
+
+        <ItemsPanelTemplate x:Key="myItemsPanelTemplateForListView">
+            <ItemsStackPanel Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+
+        <app:DateToString x:Key="dateToStringConverter" />
+        <app:ShiftToString x:Key="shiftToStringConverter" />
+    </Page.Resources>
 
     <!--#region NameOfRegion-->
     <!--#endregion-->
 
+    <!--
+        Ref:
+        https://docs.microsoft.com/en-us/windows/apps/design/controls/listview-and-gridview
+    -->
+
     <Grid Style="{StaticResource rootGridStyle}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <TextBlock Text="Availability" />
+        <!--#region Row 1/2-->
+        <TabView
+            Grid.Row="0"
+            Padding="0"
+            IsAddTabButtonVisible="False"
+            Loaded="{x:Bind ViewModel.LoadTestersAsync}"
+            TabWidthMode="SizeToContent">
 
-        </Grid>
+            <TabView.TabStripHeader>
+                <ComboBox
+                    MinWidth="120"
+                    Margin="0,0,24,0"
+                    Header="Set preferences for"
+                    ItemsSource="{x:Bind ViewModel.Testers, Mode=OneTime}"
+                    SelectedItem="{x:Bind ViewModel.SelectedTester, Mode=TwoWay}"
+                    SelectionChanged="{x:Bind ViewModel.WhenSelectedTesterChangedAsync}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="models:Tester">
+                            <TextBlock Text="{x:Bind Name, Mode=OneTime}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </TabView.TabStripHeader>
 
-        <StackPanel Grid.Row="1">
-            <TextBlock FontWeight="ExtraBold" Text="Preferences Page"><LineBreak /></TextBlock>
+            <TabView.TabItems>
+                <TabViewItem Header="Max Days/Week" IsClosable="False">
+                    <Grid Style="{StaticResource gridOfTabViewItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,6,0"
+                                VerticalAlignment="Center"
+                                Text="Max number of days per week to support:" />
+                            <NumberBox
+                                HorizontalAlignment="Left"
+                                Maximum="7"
+                                Minimum="1"
+                                SmallChange="1"
+                                SpinButtonPlacementMode="Inline"
+                                Value="{x:Bind ViewModel.MaxDays, Mode=TwoWay}" />
+                        </StackPanel>
+                    </Grid>
+                </TabViewItem>
 
-            <TextBlock FontWeight="Bold" Text="This will add the Tester's preferences (like co-tester, day/night shifts, and other choices/preferences)." />
-        </StackPanel>
+                <TabViewItem Header="Preferred Days" IsClosable="False">
+                    <Grid Style="{StaticResource gridOfTabViewItem}">
+                        <ListView
+                            x:Name="myDayOfWeeksListView"
+                            ItemsPanel="{StaticResource myItemsPanelTemplateForListView}"
+                            ItemsSource="{x:Bind ViewModel.DayOfWeeks, Mode=OneTime}"
+                            SelectionChanged="SelectedDayOfWeeks_Changed"
+                            SelectionMode="Multiple">
 
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="system:DayOfWeek">
+                                    <Grid>
+                                        <TextBlock Text="{x:Bind}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </TabViewItem>
 
+                <TabViewItem Header="Preferred Shifts" IsClosable="False">
+                    <Grid Style="{StaticResource gridOfTabViewItem}">
+                        <ListView
+                            x:Name="myShiftsListView"
+                            ItemsPanel="{StaticResource myItemsPanelTemplateForListView}"
+                            ItemsSource="{x:Bind ViewModel.Shifts, Mode=OneTime}"
+                            SelectionChanged="SelectedShifts_Changed"
+                            SelectionMode="Multiple">
 
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:WhatShift">
+                                    <Grid>
+                                        <TextBlock Text="{x:Bind Mode=OneTime, Converter={StaticResource shiftToStringConverter}, ConverterParameter=3}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </TabViewItem>
+
+                <TabViewItem Header="Unavailable Dates" IsClosable="False">
+                    <Grid Style="{StaticResource gridOfTabViewItem}">
+                        <StackPanel>
+                            <CalendarView
+                                x:Name="myCalendarView"
+                                IsTodayHighlighted="False"
+                                SelectedDatesChanged="SelectedDates_Changed"
+                                SelectionMode="Multiple" />
+                        </StackPanel>
+                    </Grid>
+                </TabViewItem>
+
+                <TabViewItem Header="Preferred Co-Tester" IsClosable="False">
+                    <Grid Style="{StaticResource gridOfTabViewItem}">
+                        <ComboBox
+                            MinWidth="120"
+                            Header="Preferred co-tester"
+                            ItemsSource="{x:Bind ViewModel.PreferredTesters, Mode=OneTime}"
+                            SelectedItem="{x:Bind ViewModel.SelectedPreferredTester, Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="models:Tester">
+                                    <TextBlock Text="{x:Bind Name, Mode=OneTime}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                </TabViewItem>
+            </TabView.TabItems>
+
+            <TabView.TabStripFooter>
+                <Button
+                    MinWidth="120"
+                    Margin="24,0,0,0"
+                    VerticalAlignment="Top"
+                    Click="{x:Bind ViewModel.SetPreferencesForSelectedTester}"
+                    Content="Set"
+                    IsEnabled="{x:Bind ViewModel.SelectedTester, Mode=OneWay, Converter={StaticResource isNotNullToBoolConverter}}"
+                    Style="{StaticResource AccentButtonStyle}" />
+            </TabView.TabStripFooter>
+        </TabView>
+        <!--#endregion-->
+
+        <!--#region Row 2/2-->
+        <GridView
+            Grid.Row="1"
+            Margin="0,24,0,0"
+            Header="Review All Preferences"
+            ItemsSource="{x:Bind ViewModel.TesterPreferences, Mode=OneWay}"
+            Loaded="{x:Bind ViewModel.LoadPreferencesAsync}"
+            SelectionMode="None"
+            Style="{StaticResource myGridViewItemStyle}">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="models:TesterPreference">
+                    <StackPanel>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Text="{x:Bind Tester.Name, Mode=OneTime}" />
+
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,6,0" Text="Max days/week:" />
+                            <TextBlock FontWeight="Bold" Text="{x:Bind MaxNumberOfDaysToSupport, Mode=OneTime}" />
+                        </StackPanel>
+
+                        <ListView
+                            Margin="0,12,0,3"
+                            ItemsPanel="{StaticResource myItemsPanelTemplateForListView}"
+                            ItemsSource="{x:Bind PreferredDays, Mode=OneTime}"
+                            Style="{StaticResource myListViewItemStyle}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="system:DayOfWeek">
+                                    <TextBlock Text="{x:Bind Mode=OneTime}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <ListView
+                            ItemsPanel="{StaticResource myItemsPanelTemplateForListView}"
+                            ItemsSource="{x:Bind PreferredShifts, Mode=OneTime}"
+                            Style="{StaticResource myListViewItemStyle}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:WhatShift">
+                                    <TextBlock Text="{x:Bind Mode=OneTime, Converter={StaticResource shiftToStringConverter}, ConverterParameter=1}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <StackPanel Orientation="Horizontal">
+                            <!--<TextBlock
+                                Margin="0,0,6,0"
+                                VerticalAlignment="Center"
+                                Text="Off dates"
+                                Visibility="{x:Bind NotAvailableDates, Mode=OneTime, Converter={StaticResource nullToVisibilityConverter}}" />-->
+
+                            <ListView
+                                Margin="0,3,0,12"
+                                ItemsPanel="{StaticResource myItemsPanelTemplateForListView}"
+                                ItemsSource="{x:Bind NotAvailableDates, Mode=OneTime}"
+                                Style="{StaticResource myListViewItemStyle}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="system:DateTime">
+                                        <StackPanel>
+                                            <TextBlock Text="{x:Bind Mode=OneTime, Converter={StaticResource dateToStringConverter}, ConverterParameter=1}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,6,0"
+                                Text="Co-Tester"
+                                Visibility="{x:Bind CoTesterName, Mode=OneTime, Converter={StaticResource nullOrEmptyStringToVisibilityConverter}}" />
+                            <TextBlock FontWeight="Bold" Text="{x:Bind CoTesterName}" />
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+        <!--#endregion-->
     </Grid>
 </Page>

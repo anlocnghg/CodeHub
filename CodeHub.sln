@@ -30,13 +30,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeesManager.Lib", "App
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TSS_Automation", "TSS_Automation", "{24A510D1-F483-4B9E-AC1D-D665ECA120B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSS", "NIWC\TSS_Automation\TSS\TSS.csproj", "{833AA5AF-68B6-4FB9-A7F0-20692C59D343}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TSS", "NIWC\TSS_Automation\TSS\TSS.csproj", "{833AA5AF-68B6-4FB9-A7F0-20692C59D343}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSS.Lib.Common", "NIWC\TSS_Automation\TSS.Lib.Common\TSS.Lib.Common.csproj", "{E218C278-EDE5-4E5F-9846-C4892316BBE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TSS.Lib.Common", "NIWC\TSS_Automation\TSS.Lib.Common\TSS.Lib.Common.csproj", "{E218C278-EDE5-4E5F-9846-C4892316BBE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSS.Lib.Common.Test", "NIWC\TSS_Automation\TSS.Lib.Common.Test\TSS.Lib.Common.Test.csproj", "{FDA5CD66-F3FB-4922-967D-A0C0BE8EF83A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TSS.Lib.Common.Test", "NIWC\TSS_Automation\TSS.Lib.Common.Test\TSS.Lib.Common.Test.csproj", "{FDA5CD66-F3FB-4922-967D-A0C0BE8EF83A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSS.Lib.ViewModels", "NIWC\TSS_Automation\TSS.Lib.ViewModels\TSS.Lib.ViewModels.csproj", "{974EC7C1-19AC-41E2-891A-63AB57FB1D35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TSS.Lib.ViewModels", "NIWC\TSS_Automation\TSS.Lib.ViewModels\TSS.Lib.ViewModels.csproj", "{974EC7C1-19AC-41E2-891A-63AB57FB1D35}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "Learn\ConsoleApp\ConsoleApp.csproj", "{A0934685-8609-4372-A631-2EAD2A4C7D6F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Misc", "_Misc", "{0B093853-D040-4FB2-B735-9894D844EB5A}"
+	ProjectSection(SolutionItems) = preProject
+		_Misc\ColorsCombination24.jpg = _Misc\ColorsCombination24.jpg
+		_Misc\Template_WinUI_Steps.txt = _Misc\Template_WinUI_Steps.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -210,6 +218,22 @@ Global
 		{974EC7C1-19AC-41E2-891A-63AB57FB1D35}.Release|x64.Build.0 = Release|Any CPU
 		{974EC7C1-19AC-41E2-891A-63AB57FB1D35}.Release|x86.ActiveCfg = Release|Any CPU
 		{974EC7C1-19AC-41E2-891A-63AB57FB1D35}.Release|x86.Build.0 = Release|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Debug|arm64.Build.0 = Debug|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Debug|x64.Build.0 = Debug|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Debug|x86.Build.0 = Debug|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Release|arm64.ActiveCfg = Release|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Release|arm64.Build.0 = Release|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Release|x64.ActiveCfg = Release|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Release|x64.Build.0 = Release|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Release|x86.ActiveCfg = Release|Any CPU
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -227,6 +251,7 @@ Global
 		{E218C278-EDE5-4E5F-9846-C4892316BBE7} = {24A510D1-F483-4B9E-AC1D-D665ECA120B0}
 		{FDA5CD66-F3FB-4922-967D-A0C0BE8EF83A} = {24A510D1-F483-4B9E-AC1D-D665ECA120B0}
 		{974EC7C1-19AC-41E2-891A-63AB57FB1D35} = {24A510D1-F483-4B9E-AC1D-D665ECA120B0}
+		{A0934685-8609-4372-A631-2EAD2A4C7D6F} = {A86442E8-5AEC-4050-B72A-1543C9E7345B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1B401288-DE17-40FF-840D-F893D3F68691}

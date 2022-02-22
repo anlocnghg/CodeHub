@@ -7,6 +7,7 @@ namespace TSS.Views
     public sealed partial class NewTesterPage : Page
     {
         public NewTesterViewModel ViewModel { get; }
+
         public NewTesterPage()
         {
             this.InitializeComponent();

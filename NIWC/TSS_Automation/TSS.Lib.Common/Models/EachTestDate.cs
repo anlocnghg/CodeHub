@@ -4,7 +4,7 @@ using LocLib.Extensions;
 namespace TSS.Lib.Common.Models
 {
     /// <summary>
-    /// This is collect the MDA's input for each day schedule.
+    /// This is to collect the MDA's input for each day schedule.
     /// </summary>
     public class EachTestDate : ObservableObject
     {
@@ -33,15 +33,17 @@ namespace TSS.Lib.Common.Models
 
         #endregion Has3rdShift
 
-        #region IsWeekendOrHoliday
+        #region Is weekend or holiday or RDO
 
         public bool IsWeekend => Date.IsWeekend();
 
         public bool IsHoliday => Date.IsHoliday();
 
+        public bool IsRDO { get; set; }
+
         public bool IsWeekendOrHoliday => IsWeekend || IsHoliday;
 
-        #endregion 
+        #endregion Is weekend or holiday or RDO
 
         public override string ToString() => Date.ToString("ddd, dd MMM yyyy");
     }

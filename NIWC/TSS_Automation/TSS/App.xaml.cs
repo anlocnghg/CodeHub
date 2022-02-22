@@ -10,6 +10,7 @@ namespace TSS
         {
             this.InitializeComponent();
         }
+
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             DependencyContainer.RegisterAndConfigureDependencies();

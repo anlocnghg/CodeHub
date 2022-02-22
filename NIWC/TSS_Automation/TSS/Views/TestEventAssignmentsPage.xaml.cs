@@ -8,6 +8,7 @@ namespace TSS.Views
     public sealed partial class TestEventAssignmentsPage : Page
     {
         public TestEventAssignmentsViewModel ViewModel { get; private set; }
+
         public TestEventAssignmentsPage()
         {
             this.InitializeComponent();
@@ -24,8 +25,8 @@ namespace TSS.Views
             /*
              * Could have used the parameters passing in the navigation,
              * but let's use the Messaging Service instead.
-             * 
-             
+             *
+
             var passedParameters = e.Parameter as Tuple<string, List<Slot>>;
             if (passedParameters != null)
             {
@@ -39,7 +40,6 @@ namespace TSS.Views
                 throw new ArgumentException($"Expected two parameters: (1) string event name, and (2) list of slots.");
             }
             */
-
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

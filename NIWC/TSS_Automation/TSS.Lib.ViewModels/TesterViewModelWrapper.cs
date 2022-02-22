@@ -3,21 +3,17 @@ using LocLib.IData;
 using LocLib.WinUI.Services;
 using LocLib.WinUI.ViewModels;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using TSS.Lib.Common.Models;
 
 namespace TSS.Lib.ViewModels
 {
-    public class TesterWrapper : ViewModelBase
+    public class TesterViewModelWrapper : ViewModelBase
     {
         private readonly IDataCRUD<Tester> _dataService;
 
-        public TesterWrapper(ICommonServices commonServices, Tester tester, IDataCRUD<Tester> dataService) : base(commonServices)
+        public TesterViewModelWrapper(ICommonServices commonServices, Tester tester, IDataCRUD<Tester> dataService) : base(commonServices)
         {
             // Current = tester; // We don't want this. We want to emulate persistent layer (XML/SQL/file)
             ItShelf = new Tester

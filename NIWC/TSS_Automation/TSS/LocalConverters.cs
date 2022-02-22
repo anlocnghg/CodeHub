@@ -101,11 +101,24 @@ namespace TSS
         }
     }
 
-    public sealed class IsWeekendOrHolidayToColor : IValueConverter
+    public sealed class EachTestDateToColor : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return (value is bool && (bool)value) ? new SolidColorBrush(Colors.OrangeRed) : null;
+            EachTestDate date = (EachTestDate)value;
+            if (date.IsRDO)
+            {
+                return new SolidColorBrush(Colors.Orange);
+            }
+            if (date.IsWeekend)
+            {
+                return new SolidColorBrush(Colors.OrangeRed);
+            }
+            if (date.IsHoliday)
+            {
+                return new SolidColorBrush(Colors.MediumPurple);
+            }
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -119,7 +132,15 @@ namespace TSS
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var date = (DateTime)value;
-            return date.ToString("ddd, dd MMM yyyy");
+            int option = parameter == null ? 99 : int.Parse(parameter.ToString());
+
+            switch (option)
+            {
+                case 1: return date.ToString("MM/dd/yyyy");
+                case 2: return date.ToString("MMM/dd/yyyy");
+                default: return date.ToString("ddd, dd MMM yyyy");
+            }
+            //return date.ToString("ddd, dd MMM yyyy");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -128,24 +149,63 @@ namespace TSS
         }
     }
 
-    public sealed class WhatShiftToString : IValueConverter
+    public sealed class ShiftToString : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             WhatShift shift = (WhatShift)value;
-            switch (shift)
+
+            int option = parameter == null ? 1 : int.Parse(parameter.ToString());
+            if (option == 1)
             {
-                case WhatShift.FirstShift:
-                    return "0600 - 1530 PT";
+                switch (shift)
+                {
+                    case WhatShift.FirstShift:
+                        return "1st Shift";
 
-                case WhatShift.SecondShift:
-                    return "1600 - 0230 PT";
+                    case WhatShift.SecondShift:
+                        return "2nd Shift";
 
-                case WhatShift.ThirdShift:
-                    return "2000 - 0600 PT";
+                    case WhatShift.ThirdShift:
+                        return "3rd Shift";
 
-                default:
-                    return "N/A";
+                    default:
+                        return "N/A";
+                }
+            }
+            else if (option == 2)
+            {
+                switch (shift)
+                {
+                    case WhatShift.FirstShift:
+                        return "0600 - 1530 PT";
+
+                    case WhatShift.SecondShift:
+                        return "1600 - 0230 PT";
+
+                    case WhatShift.ThirdShift:
+                        return "2000 - 0600 PT";
+
+                    default:
+                        return "N/A";
+                }
+            }
+            else
+            {
+                switch (shift)
+                {
+                    case WhatShift.FirstShift:
+                        return "1st Shift (0600 - 1530 PT)";
+
+                    case WhatShift.SecondShift:
+                        return "2nd Shift (1600 - 0230 PT)";
+
+                    case WhatShift.ThirdShift:
+                        return "3rd Shift (2000 - 0600 PT)";
+
+                    default:
+                        return "N/A";
+                }
             }
         }
 

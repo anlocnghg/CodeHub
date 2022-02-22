@@ -58,6 +58,7 @@ namespace TSS
             #region Application-specific services
 
             services.AddSingleton<IDataCRUD<Tester>, InMemoryTesterDataService>();
+            services.AddSingleton<IDataCRUD<TesterPreference>, InMemoryPreferenceDataService>();
 
             #endregion Application-specific services
         }
@@ -69,7 +70,7 @@ namespace TSS
             services.AddTransient<PreferenceViewModel>();
             // services.AddTransient<HomeViewModel>();
             services.AddTransient<TestersViewModel>();
-            services.AddTransient<TesterWrapper>();
+            services.AddTransient<TesterViewModelWrapper>();
             services.AddTransient<TestEventViewModel>();
             services.AddTransient<TestEventAssignmentsViewModel>();
             services.AddTransient<NewTesterViewModel>();

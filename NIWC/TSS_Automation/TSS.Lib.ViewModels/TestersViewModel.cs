@@ -2,11 +2,8 @@
 using LocLib.WinUI.Services;
 using LocLib.WinUI.ViewModels;
 
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using TSS.Lib.Common.Models;
@@ -35,13 +32,13 @@ namespace TSS.Lib.ViewModels
 
         #region Properties
 
-        public ObservableCollection<TesterWrapper> TesterWrappers { get; } = new();
+        public ObservableCollection<TesterViewModelWrapper> TesterWrappers { get; } = new();
 
         #region SelectedTester
 
-        private TesterWrapper _selectedTesterWrapper;
+        private TesterViewModelWrapper _selectedTesterWrapper;
 
-        public TesterWrapper SelectedTesterWrapper
+        public TesterViewModelWrapper SelectedTesterWrapper
         {
             get => _selectedTesterWrapper;
             set
@@ -93,7 +90,7 @@ namespace TSS.Lib.ViewModels
 
             foreach (var tester in testers)
             {
-                TesterWrappers.Add(new TesterWrapper(CommonServices, tester, _dataService));
+                TesterWrappers.Add(new TesterViewModelWrapper(CommonServices, tester, _dataService));
             }
 
             TesterCountStr = $"Testers ({TesterWrappers.Count})";

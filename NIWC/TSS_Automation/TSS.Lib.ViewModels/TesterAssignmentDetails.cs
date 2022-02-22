@@ -1,11 +1,5 @@
 ﻿using LocLib;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace TSS.Lib.ViewModels
 {
     // To keep track of how many assignments each tester supports a test event.

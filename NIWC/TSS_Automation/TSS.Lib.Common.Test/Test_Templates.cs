@@ -1,5 +1,4 @@
-﻿
-using Xunit;
+﻿using Xunit;
 
 namespace TSS.Lib.Common.Test
 {

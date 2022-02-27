@@ -39,17 +39,17 @@ namespace TSS.Lib.ViewModels
 
         #endregion SelectedTester
 
-        #region MaxDays
+        #region MaxAssignments
 
-        private int _maxDays = 5;
+        private int _maxAssignments = 5;
 
-        public int MaxDays
+        public int MaxAssignments
         {
-            get { return _maxDays; }
-            set { SetProperty(ref _maxDays, value); }
+            get { return _maxAssignments; }
+            set { SetProperty(ref _maxAssignments, value); }
         }
 
-        #endregion MaxDays
+        #endregion MaxAssignments
 
         public List<DayOfWeek> DayOfWeeks { get; set; } = new List<DayOfWeek> { DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday };
 
@@ -99,7 +99,7 @@ namespace TSS.Lib.ViewModels
 
                 TesterPreference toBeUpdated = new TesterPreference(SelectedTester)
                 {
-                    MaxNumberOfDaysToSupport = MaxDays,
+                    MaxAssignmentsCount = MaxAssignments,
                     PreferredDays = SelectedDayOfWeeks,
                     PreferredShifts = SelectedShifts,
                     NotAvailableDates = offDates.Count > 0 ? offDates : null

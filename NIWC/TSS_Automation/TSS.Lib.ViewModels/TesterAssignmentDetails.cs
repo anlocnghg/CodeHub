@@ -35,12 +35,12 @@ namespace TSS.Lib.ViewModels
 
         #region AssignmentCount
 
-        private int _assignmentCount;
+        private int _assignmentsCount;
 
-        public int AssignmentCount
+        public int AssignmentsCount
         {
-            get { return _assignmentCount; }
-            set { SetProperty(ref _assignmentCount, value); }
+            get { return _assignmentsCount; }
+            set { SetProperty(ref _assignmentsCount, value); }
         }
 
         #endregion AssignmentCount

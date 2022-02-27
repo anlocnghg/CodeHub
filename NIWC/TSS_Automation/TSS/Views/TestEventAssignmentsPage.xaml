@@ -92,7 +92,7 @@
                             <Setter Property="Padding" Value="6" />
 
                             <Setter Property="Background" Value="{StaticResource myBackgroundColor1}" />
-                            <Setter Property="Foreground" Value="{StaticResource myForegroundColor1}" />
+                            <Setter Property="Foreground" Value="{StaticResource myForegroundColor}" />
                         </Style>
                     </GridView.ItemContainerStyle>
                 </GridView>
@@ -113,11 +113,11 @@
                 Margin="6,9,0,0"
                 BorderBrush="Gray"
                 BorderThickness="1"
-                ItemsSource="{x:Bind ViewModel.TesterAssignments, Mode=OneTime}"
+                ItemsSource="{x:Bind ViewModel.AssignmentsDetails, Mode=OneTime}"
                 SelectionMode="None">
                 <ListView.Header>
-                    <StackPanel Padding="6" Background="LightSkyBlue">
-                        <TextBlock FontWeight="Bold" Text="Assignment Total" />
+                    <StackPanel Padding="6">
+                        <TextBlock FontWeight="Bold" Text="Assignments Count" />
                     </StackPanel>
                 </ListView.Header>
 
@@ -131,17 +131,15 @@
                     <DataTemplate x:DataType="viewmodels:TesterAssignmentDetails">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="0,0,6,0" Text="{x:Bind Name, Mode=OneTime}" />
-                            <TextBlock FontWeight="Bold" Text="{x:Bind AssignmentCount, Mode=OneWay}" />
+                            <TextBlock FontWeight="Bold" Text="{x:Bind AssignmentsCount, Mode=OneWay}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
+            <!--  Placeholder for something else  -->
             <Grid Grid.Row="1" Margin="6,0,0,0">
-                <TextBlock
-                    VerticalAlignment="Bottom"
-                    Text="Hello World"
-                    TextWrapping="WrapWholeWords" />
+                <TextBlock VerticalAlignment="Bottom" TextWrapping="WrapWholeWords" />
             </Grid>
         </Grid>
         <!--#endregion-->

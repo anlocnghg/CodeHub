@@ -18,16 +18,10 @@
             <!--  Other app resources here  -->
 
             <!--#region App-wide Resources-->
-            <SolidColorBrush x:Key="myBackgroundColor1" Color="#222629" />
-            <SolidColorBrush x:Key="myBackgroundColor2" Color="#19181A" />
-            <SolidColorBrush x:Key="myBackgroundColor3" Color="#474B4F" />
-            <SolidColorBrush x:Key="myBackgroundColor4" Color="#6B6E70" />
+            <SolidColorBrush x:Key="myBackgroundColor1" Color="#022140" />
+            <SolidColorBrush x:Key="myBackgroundColor2" Color="#4D6D9A" />
 
-            <SolidColorBrush x:Key="myForegroundColor1" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="myForegroundColor2" Color="#61892F" />
-            <SolidColorBrush x:Key="myForegroundColor3" Color="#479761" />
-            <SolidColorBrush x:Key="myForegroundColor4" Color="#CEBC81" />
-            <SolidColorBrush x:Key="myForegroundColor5" Color="#A16E83" />
+            <SolidColorBrush x:Key="myForegroundColor" Color="#FFFFFF" />
             <!--#endregion-->
         </ResourceDictionary>
     </Application.Resources>

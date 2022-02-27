@@ -51,7 +51,7 @@ namespace TSS.Lib.ViewModels
         #endregion EventName
 
         // This property is to keep track of how many assignments that each tester is assigned to support so far.
-        public ObservableCollection<TesterAssignmentDetails> TesterAssignments { get; private set; } = new();
+        public ObservableCollection<TesterAssignmentDetails> AssignmentsDetails { get; private set; } = new();
 
         public List<Slot> Slots { get; set; } // Get from parameter
 
@@ -65,33 +65,68 @@ namespace TSS.Lib.ViewModels
 
         public async Task GenerateAssignmentsAsync()
         {
+            await FillInSlotsAsync();
+
+            #region Verifying, if not completed, give x times to do it again.
+
+            int times = 0;
+            if (!AllSlotsAreFilled())
+            {
+                while (times < 3)
+                {
+                    await FillInSlotsAsync();
+
+                    if (AllSlotsAreFilled())
+                    {
+                        ShellViewModel.Current.ShellStatusBackground = "Green";
+                        ShellViewModel.Current.Status = $"The test support assignment has been completed.";
+
+                        break;
+                    }
+                    else
+                    {
+                        ShellViewModel.Current.ShellStatusBackground = "Orange";
+                        ShellViewModel.Current.Status = $"Could not fully schedule the assignment.";
+                    }
+
+                    times++;
+                }
+            }
+            else
+            {
+                ShellViewModel.Current.ShellStatusBackground = "Green";
+                ShellViewModel.Current.Status = $"The test support assignment has been completed.";
+            }
+
+            #endregion Verifying, if not completed, give x times to do it again.
+        }
+
+        #region Fill in slots
+
+        private async Task FillInSlotsAsync()
+        {
             foreach (var slot in Slots)
             {
                 slot.Tester_1 = null;
                 slot.Tester_2 = null;
             }
 
-            //TesterAssignments.Clear();
+            #region Assignments counts
 
-            //Testers = await _testerDataService.GetAllAsListAsync();
+            AssignmentsDetails.Clear();
+            Testers = await _testerDataService.GetAllAsListAsync();
+            foreach (var tester in Testers)
+            {
+                AssignmentsDetails.Add(new TesterAssignmentDetails { Id = tester.Id, Name = tester.Name, AssignmentsCount = 0 });
+            }
 
-            //foreach (var tester in Testers)
-            //{
-            //    TesterAssignments.Add(new TesterAssignmentDetails { Id = tester.Id, Name = tester.Name, AssignmentCount = 0 });
-            //}
+            #endregion Assignments counts
 
-            await FillInSlotsAsync();
-        }
+            ShellViewModel.Current.ShellStatusBackground = "Blue";
 
-        #region Demo to show the progress only
-
-        private async Task FillInSlotsAsync()
-        {
             ShellViewModel.Current.Status = "Working in progress... please be patient";
             ShellViewModel.Current.SetProgress(true);
 
-            //await FillInFirstTestersAsync();
-            //await FillInSecondTesterAsync();
             await FillInTestersAsync();
 
             ShellViewModel.Current.Status = string.Empty;
@@ -122,7 +157,7 @@ namespace TSS.Lib.ViewModels
                     tester1Candidates = tester1Candidates.Where(p => p.Tester.IsPrimary).ToList();
 
                     // Consider only if the assignments count has not reached the max
-                    tester1Candidates = tester1Candidates.Where(p => p.AssignmentsCount < p.MaxNumberOfDaysToSupport).ToList();
+                    tester1Candidates = tester1Candidates.Where(p => p.AssignmentsCount < p.MaxAssignmentsCount).ToList();
 
                     // Consider preferred days of week
                     tester1Candidates = tester1Candidates.Where(p => (p.PreferredDays == null) || (p.PreferredDays != null && p.PreferredDays.Any(d => d == slot.Date.DayOfWeek))).ToList();
@@ -138,6 +173,8 @@ namespace TSS.Lib.ViewModels
                         slot.Tester_1 = tester1Preference.Tester;
                         tester1Preference.AssignmentsCount++;
 
+                        UpdateDetailsCounts(slot.Tester_1.Id);
+
                         await Task.Delay(100);
 
                         #region Tester #2
@@ -148,7 +185,7 @@ namespace TSS.Lib.ViewModels
                         List<TesterPreference> tester2Candidates = Preferences.Where(p => (p.NotAvailableDates == null) || (p.NotAvailableDates != null && !p.NotAvailableDates.Any(d => d.Date == slot.Date.Date))).ToList();
 
                         // Consider only if the assignments count has not reached the max
-                        tester2Candidates = tester2Candidates.Where(p => p.AssignmentsCount < p.MaxNumberOfDaysToSupport).ToList();
+                        tester2Candidates = tester2Candidates.Where(p => p.AssignmentsCount < p.MaxAssignmentsCount).ToList();
 
                         // Consider preferred days of week
                         tester2Candidates = tester2Candidates.Where(p => (p.PreferredDays == null) || (p.PreferredDays != null && p.PreferredDays.Any(d => d == slot.Date.DayOfWeek))).ToList();
@@ -182,17 +219,16 @@ namespace TSS.Lib.ViewModels
                                 // Doesn't change: we set this as Tester #2 anyway. Best if two-way, but at least we get one-way.
                                 slot.Tester_2 = preferredCoTesterOfTester1.Tester;
                                 preferredCoTesterOfTester1.AssignmentsCount++;
-
-                                await Task.Delay(100);
                             }
                             else
                             {
                                 TesterPreference tester2Preference = tester2Candidates.PickRandom();
                                 slot.Tester_2 = tester2Preference.Tester;
                                 tester2Preference.AssignmentsCount++;
-
-                                await Task.Delay(100);
                             }
+
+                            UpdateDetailsCounts(slot.Tester_2.Id);
+                            await Task.Delay(100);
                         }
                         else
                         {
@@ -217,78 +253,31 @@ namespace TSS.Lib.ViewModels
             }
         }
 
-        private async Task FillInFirstTestersAsync()
+        #endregion Fill in slots
+
+        private bool AllSlotsAreFilled()
         {
-            // First Tester must be Primary one
-            List<Tester> primaryTesters = Testers.Where(t => t.IsPrimary).ToList();
-
-            while (!TSSHelper.HasAllPrimaryTestersFiledIn(Slots))
+            foreach (Slot slot in Slots)
             {
-                foreach (var slot in Slots)
+                if (slot.Tester_1 == null || slot.Tester_2 == null)
                 {
-                    Tester tester_1 = primaryTesters.GetRandomElementUsingSeedGuid();
-                    slot.Tester_1 = tester_1;
-                    await Task.Delay(500);
+                    return false;
+                }
+            }
 
-                    #region Update Assignment Count
+            return true;
+        }
 
-                    foreach (var testerAssignmentDetails in TesterAssignments)
-                    {
-                        if (testerAssignmentDetails.Id == tester_1.Id)
-                        {
-                            testerAssignmentDetails.AssignmentCount++;
-                        }
-                    }
-
-                    #endregion Update Assignment Count
+        private void UpdateDetailsCounts(int id)
+        {
+            foreach (TesterAssignmentDetails testerAssignmentDetails in AssignmentsDetails)
+            {
+                if (testerAssignmentDetails.Id == id)
+                {
+                    testerAssignmentDetails.AssignmentsCount++;
                 }
             }
         }
-
-        private async Task FillInSecondTesterAsync()
-        {
-            List<Tester> allTesters = Testers;
-            while (!TSSHelper.HasAllSecondTestersFiledIn(Slots))
-            {
-                foreach (var slot in Slots)
-                {
-                    Tester tester_2 = allTesters.GetRandomElementUsingSeedGuid();
-                    if (slot.Tester_1 == null)
-                    {
-                        throw new Exception("Tester #1 has not been assigned");
-                    }
-                    else
-                    {
-                        if (slot.Tester_1.Equals(tester_2))
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            if (slot.Tester_2 == null)
-                            {
-                                slot.Tester_2 = tester_2;
-                                await Task.Delay(500);
-                            }
-                        }
-                    }
-
-                    #region Update Assignment Count
-
-                    foreach (var testerAssignmentDetails in TesterAssignments)
-                    {
-                        if (testerAssignmentDetails.Id == tester_2.Id)
-                        {
-                            testerAssignmentDetails.AssignmentCount++;
-                        }
-                    }
-
-                    #endregion Update Assignment Count
-                }
-            }
-        }
-
-        #endregion Demo to show the progress only
 
         #endregion Methods
     }

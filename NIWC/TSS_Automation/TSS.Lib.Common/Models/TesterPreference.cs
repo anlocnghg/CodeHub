@@ -11,8 +11,8 @@
         // public Tester CoTester { get; set; }
         public int CoTesterId { get; set; } = -1;
 
-        public string CoTesterName { get; set; } = null;
-        public int MaxNumberOfDaysToSupport { get; set; } = 5;
+        public string CoTesterName { get; set; }
+        public int MaxAssignmentsCount { get; set; } = 5; // Per week
         public List<DayOfWeek> PreferredDays { get; set; } // = new List<DayOfWeek> { DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday };
         public List<WhatShift> PreferredShifts { get; set; } // = new List<WhatShift> { WhatShift.FirstShift, WhatShift.SecondShift, WhatShift.ThirdShift };
         public List<DateTime> NotAvailableDates { get; set; }

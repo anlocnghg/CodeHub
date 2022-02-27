@@ -115,6 +115,7 @@ namespace TSS.Lib.ViewModels
                     || (EndDate.DateTime > StartDate.DateTime.AddMonths(6))
                     )
                 {
+                    ShellViewModel.Current.ShellStatusBackground = "Red";
                     ShellViewModel.Current.Status = $"Start Date must be later than today and End Date must be later than Start Date (but not more than 6 months).";
                     return false;
                 }
@@ -124,6 +125,7 @@ namespace TSS.Lib.ViewModels
                     && EndDate.DateTime <= StartDate.DateTime.AddMonths(6)
                     )
                 {
+                    ShellViewModel.Current.ShellStatusBackground = "Gray";
                     ShellViewModel.Current.Status = string.Empty;
                     return true;
                 }
@@ -199,6 +201,7 @@ namespace TSS.Lib.ViewModels
 
             if (slots.Count > 0)
             {
+                ShellViewModel.Current.ShellStatusBackground = "Gray";
                 ShellViewModel.Current.Status = string.Empty;
 
                 // NavigationService.Navigate<TestEventAssignmentsViewModel>(Tuple.Create(EventName, slots));
@@ -210,6 +213,7 @@ namespace TSS.Lib.ViewModels
             }
             else
             {
+                ShellViewModel.Current.ShellStatusBackground = "Orange";
                 ShellViewModel.Current.Status = "No input, please pick at least a shift.";
             }
         }

@@ -40,8 +40,14 @@
                 Value="{x:Bind ViewModel.ProgressValue, Mode=OneWay}" />
         </Grid>
 
-        <Grid Grid.Row="2" Style="{StaticResource shellStatusGrid}">
-            <TextBlock Style="{StaticResource ShellStatusStyle}" Text="{x:Bind ViewModel.Status, Mode=OneWay}" />
+        <Grid
+            Grid.Row="2"
+            Background="{x:Bind ViewModel.ShellStatusBackground, Mode=OneWay}"
+            Style="{StaticResource shellStatusGrid}">
+            <TextBlock
+                Foreground="{x:Bind ViewModel.ShellStatusForeground, Mode=OneWay}"
+                Style="{StaticResource ShellStatusText}"
+                Text="{x:Bind ViewModel.Status, Mode=OneWay}" />
         </Grid>
     </Grid>
 </Window>

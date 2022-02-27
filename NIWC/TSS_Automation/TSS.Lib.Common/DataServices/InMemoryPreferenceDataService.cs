@@ -72,7 +72,7 @@ namespace TSS.Lib.Common.DataServices
             TesterPreference toBeUpdated = _testerPreferences.Single(p => p.Tester == testerPreference.Tester);
 
             {
-                toBeUpdated.MaxNumberOfDaysToSupport = testerPreference.MaxNumberOfDaysToSupport;
+                toBeUpdated.MaxAssignmentsCount = testerPreference.MaxAssignmentsCount;
                 toBeUpdated.PreferredDays = testerPreference.PreferredDays;
                 toBeUpdated.PreferredShifts = testerPreference.PreferredShifts;
                 toBeUpdated.CoTesterId = testerPreference.CoTesterId;

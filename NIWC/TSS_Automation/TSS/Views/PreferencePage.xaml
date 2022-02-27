@@ -24,7 +24,7 @@
                         <Setter Property="Padding" Value="6" />
 
                         <Setter Property="Background" Value="{StaticResource myBackgroundColor1}" />
-                        <Setter Property="Foreground" Value="{StaticResource myForegroundColor1}" />
+                        <Setter Property="Foreground" Value="{StaticResource myForegroundColor}" />
                     </Style>
                 </Setter.Value>
             </Setter>
@@ -37,8 +37,8 @@
                     <Style TargetType="ListViewItem">
                         <Setter Property="Margin" Value="0" />
 
-                        <Setter Property="Background" Value="{StaticResource myBackgroundColor3}" />
-                        <Setter Property="Foreground" Value="{StaticResource myForegroundColor1}" />
+                        <Setter Property="Background" Value="{StaticResource myBackgroundColor2}" />
+                        <Setter Property="Foreground" Value="{StaticResource myForegroundColor}" />
                     </Style>
                 </Setter.Value>
             </Setter>
@@ -60,7 +60,7 @@
         </Style>
 
         <Style x:Key="myRectangleHorizontalLineStyle" TargetType="Rectangle">
-            <Setter Property="Fill" Value="{StaticResource myForegroundColor3}" />
+            <Setter Property="Fill" Value="{StaticResource myForegroundColor}" />
             <Setter Property="Height" Value="1" />
         </Style>
 
@@ -111,7 +111,7 @@
             </TabView.TabStripHeader>
 
             <TabView.TabItems>
-                <TabViewItem Header="Max Days/Week" IsClosable="False">
+                <TabViewItem Header="Max Assignments/Week" IsClosable="False">
                     <Grid Style="{StaticResource gridOfTabViewItem}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
@@ -124,7 +124,7 @@
                                 Minimum="1"
                                 SmallChange="1"
                                 SpinButtonPlacementMode="Inline"
-                                Value="{x:Bind ViewModel.MaxDays, Mode=TwoWay}" />
+                                Value="{x:Bind ViewModel.MaxAssignments, Mode=TwoWay}" />
                         </StackPanel>
                     </Grid>
                 </TabViewItem>
@@ -230,8 +230,8 @@
                             Text="{x:Bind Tester.Name, Mode=OneTime}" />
 
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,6,0" Text="Max days/week:" />
-                            <TextBlock FontWeight="Bold" Text="{x:Bind MaxNumberOfDaysToSupport, Mode=OneTime}" />
+                            <TextBlock Margin="0,0,6,0" Text="Max Assignments/week:" />
+                            <TextBlock FontWeight="Bold" Text="{x:Bind MaxAssignmentsCount, Mode=OneTime}" />
                         </StackPanel>
 
                         <ListView
@@ -272,7 +272,7 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="system:DateTime">
                                         <StackPanel>
-                                            <TextBlock Text="{x:Bind Mode=OneTime, Converter={StaticResource dateToStringConverter}, ConverterParameter=1}" />
+                                            <TextBlock Foreground="OrangeRed" Text="{x:Bind Mode=OneTime, Converter={StaticResource dateToStringConverter}, ConverterParameter=1}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
